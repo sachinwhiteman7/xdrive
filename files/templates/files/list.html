@@ -65,7 +65,7 @@
             <tr>
                 <th>{{ file.file_name }}</th>
                 <th>{{ file.file_type }}</th>
-                <th><a href="{{ file.file.url }}">download</a></th>
+                <th><a href="{{file.file.url}}" download>download</a></th>
             </tr>
         {% endfor %}
     </table>
