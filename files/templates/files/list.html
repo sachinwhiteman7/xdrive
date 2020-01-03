@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Files</title>
+    <style>
+        table {
+             font-family: arial, sans-serif;
+             border-collapse: collapse;
+             width: 50%;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 70%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+{% if files %}
+    <h3>Uploaded Files</h3>
+    <table>
+        <tr>
+            <th>file name</th>
+            <th>file type</th>
+            <th>download link</th>
+        </tr>
+        {% for file in files %}
+            <tr>
+                <th>{{ file.file_name }}</th>
+                <th>{{ file.file_type }}</th>
+                <th><a href="{{ file.file.url }}">download</a></th>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    you have no uploaded files
+{% endif %}
+
+<!-- Trigger the modal with a button -->
+<p>
+<button id="modal-button" type="button" data-toggle="modal" data-target="#myModal">Upload a file</button>
+</p>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>
+            <form enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">upload</button>
+            </form>
+        </p>
+  </div>
+</div>
+<script>
+    var modal = document.getElementById('myModal');
+    var btn = document.getElementById("modal-button");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        modal.style.display = "block";
+    };
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
